@@ -75,9 +75,9 @@ void solution(int x, int y,std::vector<std::vector<int>> & p, std::vector<std::v
     
     
     K[x][y] = max; // e o simetrico
-    //if (p[0][1] < y || p[1][0] < x)
+    if (p[0][1] < y || p[1][0] < x)
         return;
-    //K[y][x] = max;
+    K[y][x] = max;
 }
 
 int main()
@@ -99,10 +99,11 @@ int main()
     for (int j = 0; j < n; ++j)
     {
         std::cin >> a >> b >> pi;
-        if(a <= X && b <= Y){
+        if(a <= X && b <= Y)
             p[a][b] = pi;
+        if(b <= X && a <= Y)
             p[b][a] = pi;
-        }
+        
     }
 
     p[0][1] = X;
