@@ -8,22 +8,59 @@
 using namespace std;
 
 
+int getLastC(int row, int column, vector<vector<int>> &dp){
+    if (column <= 1)
+        return 0;
+    while (column > 1 && dp[row][column] == dp[row][column - 1]){
+        column--;
+    }
+    return column;
+    
+    // if (column <= 0)
+    //     return 0;
+    
+    // if (dp[row][column] != dp[row][column - 1])
+    //     return column;
+    
+    // return getLastC(row, column - 1, dp);
+
+}
+
+int getLastR(int row, int column, vector<vector<int>> dp){
+    if (row <= 1)
+        return 0;
+
+    while (row > 1 && dp[row][column] == dp[row - 1][column])
+        row--;
+    return row;
+    // if (row <= 0)
+    //     return 0;
+    // if (dp[row][column] != dp[row - 1][column])
+    //     return row;
+    
+    // return getLastR(row - 1, column, dp);
+
+} 
+
+
 int maxProfit(int length, int width, vector<vector<int>> &prices){
     vector<vector<int>> dp(length + 1, vector<int>(width + 1)); // stores max profit
     int l = 0;
     for (int i = 1; i <= length; i++){ // calculates profit of subrectangles
         int w = 0;
-        if (i == 50)
-            printf("here");
         for (int j = 1; j <= width; j++){
+            w = getLastC(i, j - 1, dp);
+            l = getLastR(i - 1, j, dp);
+
             dp[i][j] = max({dp[i][j-1] + dp[i][j-w], // price of the previous piece + price of the remaining piece
                             dp[i-1][j] + dp[1][j],  // price of piece (i-1) * j dimensions + price of 1 * j piece
                             dp[i-1][j] + dp[i-l][j-w],
+                            dp[i-1][j] + dp[i-l][j],
                             prices[i][j] } );
-            if (dp[i][j] != dp[i][j-1])
-                w = j;
-            if (dp[i][j] != dp[i-1][j])
-                l = i;
+            // if (dp[i][j] != dp[i][j-1])
+            //     w = j;
+            // if (dp[i][j] != dp[i-1][j])
+            //     l = i;
         }
     }
     return dp[length][width];
